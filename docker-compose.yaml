@@ -1,0 +1,9 @@
+services:
+  mcp-server:
+    environment:
+      - SOME_KEY=1234567890
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
