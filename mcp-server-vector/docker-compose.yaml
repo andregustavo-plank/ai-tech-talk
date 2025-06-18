@@ -10,9 +10,9 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata3:/var/lib/postgresql/data
       - ./sql/prompts.sql:/docker-entrypoint-initdb.d/prompts.sql
 
 volumes:
-  pgdata:
+  pgdata3:
     driver: local

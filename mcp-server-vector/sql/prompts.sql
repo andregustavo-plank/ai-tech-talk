@@ -1,3 +1,6 @@
+-- Install the pgvector extension to enable the 'vector' type
+CREATE EXTENSION IF NOT EXISTS vector;
+
 -- Create the LLM_PROMPTS table if it does not exist
 CREATE TABLE IF NOT EXISTS LLM_PROMPTS (
     id SERIAL PRIMARY KEY,
@@ -10,26 +13,26 @@ CREATE TABLE IF NOT EXISTS LLM_PROMPTS (
 -- Upsert 20 random prompts into the LLM_PROMPTS table
 INSERT INTO LLM_PROMPTS (id, name, description, prompt)
 VALUES
-    (1, 'Prompt 1', 'Description for prompt 1', 'What is the capital of France?'),
-    (2, 'Prompt 2', 'Description for prompt 2', 'Explain the theory of relativity.'),
-    (3, 'Prompt 3', 'Description for prompt 3', 'What are the benefits of exercise?'),
-    (4, 'Prompt 4', 'Description for prompt 4', 'Describe the process of photosynthesis.'),
-    (5, 'Prompt 5', 'Description for prompt 5', 'What is the largest mammal on Earth?'),
-    (6, 'Prompt 6', 'Description for prompt 6', 'How does a computer work?'),
-    (7, 'Prompt 7', 'Description for prompt 7', 'What is the Pythagorean theorem?'),
-    (8, 'Prompt 8', 'Description for prompt 8', 'Explain the water cycle.'),
-    (9, 'Prompt 9', 'Description for prompt 9', 'What is the speed of light?'),
-    (10, 'Prompt 10', 'Description for prompt 10', 'Describe the human digestive system.'),
-    (11, 'Prompt 11', 'Description for prompt 11', 'What is quantum mechanics?'),
-    (12, 'Prompt 12', 'Description for prompt 12', 'How do plants grow?'),
-    (13, 'Prompt 13', 'Description for prompt 13', 'What is the function of the heart?'),
-    (14, 'Prompt 14', 'Description for prompt 14', 'Explain the concept of gravity.'),
-    (15, 'Prompt 15', 'Description for prompt 15', 'What is the structure of an atom?'),
-    (16, 'Prompt 16', 'Description for prompt 16', 'How does photosynthesis work?'),
-    (17, 'Prompt 17', 'Description for prompt 17', 'What is the theory of evolution?'),
-    (18, 'Prompt 18', 'Description for prompt 18', 'Describe the solar system.'),
-    (19, 'Prompt 19', 'Description for prompt 19', 'What is the importance of biodiversity?'),
-    (20, 'Prompt 20', 'Description for prompt 20', 'Explain the process of mitosis.')
+    (1, 'Code Review', 'Request a review of a code snippet for best practices and potential issues.', 'Please review the following code for best practices and potential bugs: <insert code here>'),
+    (2, 'Debugging Help', 'Ask for help identifying and fixing a bug in your code.', 'I am encountering a bug in this code. Can you help me identify and fix it? <insert code here>'),
+    (3, 'Refactoring Suggestion', 'Request suggestions for refactoring a piece of code to improve readability or performance.', 'How can I refactor this code to make it more readable or efficient? <insert code here>'),
+    (4, 'Write Unit Tests', 'Ask for unit tests to be written for a given function or module.', 'Please write unit tests for the following function: <insert code here>'),
+    (5, 'Explain Code', 'Request an explanation of what a code snippet does.', 'Can you explain what this code does? <insert code here>'),
+    (6, 'API Documentation', 'Request documentation for a function, class, or API endpoint.', 'Please generate documentation for the following API/function: <insert code here>'),
+    (7, 'Suggest Libraries', 'Ask for library or tool recommendations for a specific task.', 'What libraries or tools would you recommend for <insert task or technology>?'),
+    (8, 'Optimize SQL Query', 'Request optimization suggestions for a SQL query.', 'How can I optimize this SQL query? <insert SQL here>'),
+    (9, 'Regex Help', 'Ask for help writing or understanding a regular expression.', 'Can you help me write or understand this regular expression? <insert regex here>'),
+    (10, 'Architecture Advice', 'Request advice on designing the architecture for a new project or feature.', 'What architecture would you recommend for a project that needs to <insert requirements>?'),
+    (11, 'Security Review', 'Request a security review of a code snippet or system design.', 'Please review this code/system for potential security vulnerabilities: <insert code or description here>'),
+    (12, 'Performance Profiling', 'Ask for advice on profiling and improving application performance.', 'How can I profile and improve the performance of my application? <insert context here>'),
+    (13, 'DevOps Automation', 'Request help automating a development or deployment workflow.', 'How can I automate the following workflow using DevOps tools? <insert workflow description here>'),
+    (14, 'CI/CD Pipeline', 'Ask for help setting up or improving a CI/CD pipeline.', 'Can you help me set up or improve a CI/CD pipeline for my project? <insert project details here>'),
+    (15, 'Code Migration', 'Request guidance on migrating code from one language, framework, or version to another.', 'What steps should I take to migrate my code from <source> to <target>?'),
+    (16, 'Design Patterns', 'Ask for advice on applying design patterns to solve a problem.', 'Which design pattern would be suitable for solving this problem? <insert problem description here>'),
+    (17, 'Error Explanation', 'Request an explanation and solution for a specific error message.', 'I am getting this error: <insert error message>. What does it mean and how can I fix it?'),
+    (18, 'Code Generation', 'Ask for code to be generated for a specific task or algorithm.', 'Can you generate code that accomplishes the following task? <insert task description here>'),
+    (19, 'Best Practices', 'Request best practices for a specific technology, language, or workflow.', 'What are the best practices for <insert technology, language, or workflow>?'),
+    (20, 'Learning Path', 'Ask for a recommended learning path for a technology or role.', 'What is a good learning path to become proficient in <insert technology or role>?')
 ON CONFLICT (id) DO UPDATE SET
     name = EXCLUDED.name,
     description = EXCLUDED.description,
