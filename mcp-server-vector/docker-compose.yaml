@@ -12,6 +12,14 @@ services:
     volumes:
       - pgdata3:/var/lib/postgresql/data
       - ./sql/prompts.sql:/docker-entrypoint-initdb.d/prompts.sql
+  mcp-server-vector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "6274:6274"
+    depends_on:
+      - postgres
 
 volumes:
   pgdata3:
