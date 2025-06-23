@@ -20,6 +20,7 @@ RUN apt-get update && \
 
 # Make all ports accessible
 EXPOSE 6274
+EXPOSE 6277
 
 # Run the command to start the server
 CMD ["uv", "run", "mcp", "dev", "server.py"]

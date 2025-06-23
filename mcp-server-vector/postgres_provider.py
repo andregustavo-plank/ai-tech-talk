@@ -3,6 +3,10 @@ from psycopg2 import sql
 import openai
 import os
 import time
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 def connect_to_db(connection_string):
     """
@@ -73,6 +77,7 @@ def process_embeddings(connection_string, openai_api_key, table_name, table_colu
         openai_api_key (str): OpenAI API key.
         table_name (str): Name of the table to process.
         table_column_name (str): Name of the column to generate embeddings for.
+        embedding_column_name (str): Name of the column to store the embeddings in.
     """
     openai.api_key = openai_api_key
     conn, cursor = connect_to_db(connection_string)
@@ -113,6 +118,57 @@ def process_embeddings(connection_string, openai_api_key, table_name, table_colu
 
     except Exception as e:
         return f"Error processing embeddings for table {table_name} in database {connection_string}: {e}"
+    finally:
+        cursor.close()
+        conn.close()
+
+def search_by_similarity(connection_string, openai_api_key, table_name, embedding_column_name, query, match_threshold):
+    """
+    Search for similar items in the database using similarity search.
+    Args:
+        connection_string (str): PostgreSQL connection string.
+        openai_api_key (str): OpenAI API key.
+        table_name (str): Name of the table to search in.
+        embedding_column_name (str): Name of the column containing embeddings.
+        query (str): The query to search for.
+        match_threshold (float): The threshold for matching.
+    """
+    openai.api_key = openai_api_key
+    conn, cursor = connect_to_db(connection_string)
+    try:
+        logging.debug("Generating embedding for query: %s", query)
+        embedding_resp = openai.embeddings.create(
+            model="text-embedding-ada-002",
+            input=query,
+        )
+        if not check_embedding_valid(embedding_resp):
+            logging.error("Invalid embedding response")
+            return "Invalid embedding response"
+
+        embedding_str = '[' + ','.join(map(str, embedding_resp.data[0].embedding)) + ']'
+        logging.debug("Generated embedding: %s", embedding_str)
+
+        cursor.execute(
+            sql.SQL("""
+                SELECT description, prompt, 1 - ({column} <=> %s) as similarity
+                FROM public.{table}
+                WHERE 1 - ({column} <=> %s) > %s
+                ORDER BY {column} <=> %s
+            """).format(
+                column=sql.Identifier(embedding_column_name),
+                table=sql.Identifier(table_name)
+            ),
+            (embedding_str, embedding_str, match_threshold, embedding_str,)
+        )
+
+        results = cursor.fetchall()
+        logging.debug("Query results: %s", results)
+        results_str = '\n'.join([str(row) for row in results])
+        return results_str
+
+    except Exception as e:
+        logging.error("Error during similarity search: %s", e)
+        return f"Error during similarity search: {e}"
     finally:
         cursor.close()
         conn.close()

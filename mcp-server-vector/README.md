@@ -1,3 +1,11 @@
+# Setup environment
+
+## Install UV:
+
+````
+pip install uv
+````
+
 # Run Vector Postgres
 
 ````sh
