@@ -9,7 +9,7 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// TASK 0 - Try to call the health check tool
+// TASK 0 (Homework) - Try to call the health check tool
 server.tool("health-check",
   { test_string: z.string() },
   async ({ test_string }: { test_string: string }) => {
@@ -27,7 +27,7 @@ server.tool("health-check",
 );
 
 
-// TASK 1 Understanding MCP Tools - Create a hello world tool to convert miles to kilometers using the formula: kilometers = miles * 1.60934
+// TASK 1 (Basic - Understanding MCP Tools) - Create a hello world tool to convert miles to kilometers using the formula: kilometers = miles * 1.60934
 server.tool("convert-miles-to-kilometers",
   { miles: z.number() },
   async ({ miles }: { miles: number }) => {
@@ -36,7 +36,7 @@ server.tool("convert-miles-to-kilometers",
   }
 );
 
-// TASK 2 - Similarity Search - Create a tool to receive a query and return the most similar items in the database
+// TASK 2 - (Intermediate - Similarity Search) - Create a tool to receive a query and return the most similar items in the database
 server.tool("similarity-search",
   { query: z.string(), column_name: z.string(), similarity_threshold: z.number() },
   async ({ query, column_name, similarity_threshold }: { query: string, column_name: string, similarity_threshold: number }) => {
@@ -72,7 +72,7 @@ server.tool("similarity-search",
   } 
 );
 
-// TASK 3 - Add a new column to the database to store the embeddings and update the database with the embeddings
+// TASK 3 - (Advanced - Add and Update Embedding Column) - Add a new column to the database to store the embeddings and update the database with the embeddings
 server.tool("add-embedding-column",
   { original_column_name: z.string() },
   async ({ original_column_name }: { original_column_name: string }) => {
