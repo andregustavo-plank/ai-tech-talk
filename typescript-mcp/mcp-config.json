@@ -1,11 +1,10 @@
 {
-    "mcpServers": {
-      "github": {
-        "command": "node",
-        "args": ["/Users/andre/dev/plank/ai-tech-talk/dist/src/mcp-server.js"],
-        "env": {
-          "OPENAI_API_KEY": ""
-        }
-      }
+  "mcpServers": {
+    "typescript-mcp": {
+      "command": "node",
+      "args": [
+        "/Users/andre/dev/plank/meetup/ai-tech-talk/typescript-mcp/dist/src/mcp-server.js"
+      ]
     }
   }
+}

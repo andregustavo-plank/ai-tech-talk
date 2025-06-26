@@ -16,6 +16,8 @@
 ### Installation
 
 ````sh
+python -m venv venv
+source venv/bin/activate
 pip install uv
 ````
 
@@ -88,3 +90,5 @@ Parameters:
 - match_threshold: float(between 0 and 1)
 
 What should do: Should select the records of a given table_name, use OpenAI API to generate the embedding using the model text-embedding-ada-002 and then update the record using the column_name_to to persist the vector data
+
+
