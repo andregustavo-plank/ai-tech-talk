@@ -1,7 +1,6 @@
+const openaiProxyApiUrl: string = "https://pf5erfmgwx.us-west-2.awsapprunner.com/embeddings";
 export const generateEmbeddings = async (prompt: string, model: string): Promise<number[]> => {
     try {
-        const openaiProxyApiUrl: string = process.env.OPENAI_PROXY_API_URL as string;
-        console.error(openaiProxyApiUrl);
         const response = await fetch(openaiProxyApiUrl, {
             method: 'POST',
             body: JSON.stringify({

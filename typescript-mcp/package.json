@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc && shx chmod +x dist/**/*.js",
     "start": "npm run build && node dist/src/mcp-server.js",
-    "start-inspector": "export DANGEROUSLY_OMIT_AUTH=true && npm run build && npx @modelcontextprotocol/inspector node dist/src/mcp-server.js",
+    "start-inspector": "export DANGEROUSLY_OMIT_AUTH=true && export MCP_SERVER_REQUEST_TIMEOUT=10000000 && npm run build && npx @modelcontextprotocol/inspector node dist/src/mcp-server.js",
     "prepare": "npm run build",
     "watch": "tsc --watch"
   },
